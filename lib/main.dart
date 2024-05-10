@@ -37,9 +37,10 @@ class _AppState extends State<App> {
   final textEditingController = TextEditingController();
 
   final snackBar = const SnackBar(
-    content: Text('Le code postal n\'est pas attribué'),
-    duration: Duration(seconds: 2),
-  );
+      behavior: SnackBarBehavior.floating,
+      content: Text('Le code postal n\'est pas attribué'),
+      duration: Duration(seconds: 2),
+      margin: EdgeInsets.only(bottom: 60.0, left: 10, right: 10));
 
   @override
   void initState() {
@@ -62,24 +63,23 @@ class _AppState extends State<App> {
       String requestUrl = serviceUrl + textEditingController.text;
 
       http.Response response = await http.get(Uri.parse(requestUrl));
+      setState(() {
+        rowColorIndex = 0;
 
-      if (response.statusCode == 200) {
-        setState(() {
+        selectedRow = 1;
+        sortCodeAsc = true;
+        sortNameAsc = false;
+        if (response.statusCode == 200) {
           List<dynamic> json = jsonDecode(response.body) as List<dynamic>;
 
           codes = List<Code>.generate(
               json.length, (i) => Code.fromJson(json.elementAt(i)));
-
-          rowColorIndex = 0;
-
-          selectedRow = 1;
-          sortCodeAsc = true;
-          sortNameAsc = false;
-        });
-      }
-      if (response.statusCode == 404) {
-        showSnackbar();
-      }
+        }
+        if (response.statusCode == 404) {
+          showSnackbar();
+          codes = [];
+        }
+      });
 
       textEditingController.clear();
     }
