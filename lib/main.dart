@@ -54,10 +54,6 @@ class _AppState extends State<App> {
     super.dispose();
   }
 
-  void showSnackbar() {
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
   void verifyTextField() async {
     if (textEditingController.text.characters.length == 5) {
       String requestUrl = serviceUrl + textEditingController.text;
@@ -76,8 +72,8 @@ class _AppState extends State<App> {
               json.length, (i) => Code.fromJson(json.elementAt(i)));
         }
         if (response.statusCode == 404) {
-          showSnackbar();
-          codes = [];
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          codes.clear();
         }
       });
 
