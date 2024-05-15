@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 import 'package:data_table_2/data_table_2.dart';
+import 'package:http/http.dart';
 
 import 'package:recherche_code_postal/utils/code.dart';
 
@@ -37,6 +37,12 @@ class _AppState extends State<AppContent> {
   int selectedCol = 1;
   bool sortAsc = true;
 
+  final snackBar = const SnackBar(
+      behavior: SnackBarBehavior.floating,
+      content: Text('Le code postal n\'est pas attribué'),
+      duration: Duration(seconds: 2),
+      margin: EdgeInsets.only(bottom: 60.0, left: 10, right: 10));
+
   //
 
   final textFieldController = TextEditingController();
@@ -52,42 +58,9 @@ class _AppState extends State<AppContent> {
     LengthLimitingTextInputFormatter(5)
   ];
 
-  final snackBar = const SnackBar(
-      behavior: SnackBarBehavior.floating,
-      content: Text('Le code postal n\'est pas attribué'),
-      duration: Duration(seconds: 2),
-      margin: EdgeInsets.only(bottom: 60.0, left: 10, right: 10));
-
-  void textFieldVerify() async {
-    if (textFieldController.text.characters.length == 5) {
-      String requestUrl = serviceUrl + textFieldController.text;
-
-      http.Response response = await http.get(Uri.parse(requestUrl));
-
-      setState(() {
-        rowColorIndex = 0;
-        selectedCol = 1;
-        sortAsc = true;
-
-        if (response.statusCode == 200) {
-          List<dynamic> json = jsonDecode(response.body) as List<dynamic>;
-
-          codes = List<Code>.generate(
-              json.length, (i) => Code.fromJson(json.elementAt(i)));
-        }
-        if (response.statusCode == 404) {
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          codes.clear();
-        }
-      });
-
-      textFieldController.clear();
-    }
-  }
-
   //
 
-  void dataTableSort(int columnIndex, bool ascending) {
+  void sortDataTable(int columnIndex, bool ascending) {
     rowColorIndex = 0;
     selectedCol = columnIndex;
     sortAsc = ascending;
@@ -103,12 +76,48 @@ class _AppState extends State<AppContent> {
     }
   }
 
+  final headerColor = MaterialStateProperty.resolveWith<Color?>(
+      (Set<MaterialState> states) => Colors.grey.withOpacity(0.3));
+
+  //
+
+  void callService() async {
+    String requestUrl = serviceUrl + textFieldController.text;
+
+    Response response = await get(Uri.parse(requestUrl));
+
+    setState(() => parseResponse(response));
+
+    textFieldController.clear();
+  }
+
+  void parseResponse(Response response) {
+    rowColorIndex = 0;
+    selectedCol = 1;
+    sortAsc = true;
+
+    if (response.statusCode == 200) {
+      List<dynamic> json = jsonDecode(response.body) as List<dynamic>;
+
+      codes = List<Code>.generate(
+          json.length, (i) => Code.fromJson(json.elementAt(i)));
+    }
+    if (response.statusCode == 404) {
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      codes.clear();
+    }
+  }
+
   //
 
   @override
   void initState() {
     super.initState();
-    textFieldController.addListener(textFieldVerify);
+    textFieldController.addListener(() {
+      if (textFieldController.text.characters.length == 5) {
+        callService();
+      }
+    });
   }
 
   @override
@@ -118,23 +127,20 @@ class _AppState extends State<AppContent> {
           child: DataTable2(
         sortAscending: sortAsc,
         sortColumnIndex: selectedCol,
-        headingRowColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) => Colors.grey.withOpacity(0.3)),
+        headingRowColor: headerColor,
         columns: <DataColumn>[
           DataColumn(
               label: const Text(
                 'Commune',
               ),
-              onSort: ((columnIndex, ascending) => setState(() {
-                    dataTableSort(columnIndex, ascending);
-                  }))),
+              onSort: ((columnIndex, ascending) =>
+                  setState(() => sortDataTable(columnIndex, ascending)))),
           DataColumn(
               label: const Text(
                 'Code Insee',
               ),
-              onSort: ((columnIndex, ascending) => setState(() {
-                    dataTableSort(columnIndex, ascending);
-                  }))),
+              onSort: ((columnIndex, ascending) =>
+                  setState(() => sortDataTable(columnIndex, ascending)))),
         ],
         rows: codes
             .map(
