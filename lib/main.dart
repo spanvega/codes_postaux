@@ -76,7 +76,7 @@ class _AppState extends State<AppContent> {
     }
   }
 
-  final headerColor = WidgetStateProperty.all(Colors.grey.withOpacity(0.3));
+  final headerColor = WidgetStatePropertyAll(Colors.grey.withOpacity(0.3));
 
   //
 
@@ -144,7 +144,7 @@ class _AppState extends State<AppContent> {
         rows: codes
             .map(
               (code) => DataRow(
-                  color: WidgetStateProperty.all((rowColorIndex++).isOdd
+                  color: WidgetStatePropertyAll((rowColorIndex++).isOdd
                       ? Colors.grey.withOpacity(0.15)
                       : null),
                   cells: [
