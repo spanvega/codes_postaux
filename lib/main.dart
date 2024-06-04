@@ -49,6 +49,7 @@ class _AppState extends State<AppContent> {
 
   final InputDecoration textFieldDecoration = const InputDecoration(
       border: InputBorder.none,
+      contentPadding: EdgeInsets.only(left: 15),
       fillColor: Colors.amberAccent,
       filled: true,
       hintText: 'Entrez le code postal');
