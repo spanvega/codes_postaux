@@ -1,14 +1,14 @@
 class Code {
-  final int codePostal;
-  final int codeCommune;
+  final String codePostal;
+  final String codeCommune;
   final String nomCommune;
   final String libelleAcheminement;
 
   Code.fromJson(Map<dynamic, dynamic> item)
-      : codePostal = int.parse(item['codePostal']),
-        codeCommune = int.parse(item['codeCommune']),
-        nomCommune = item['nomCommune'] as String,
-        libelleAcheminement = item['libelleAcheminement'] as String;
+      : codePostal = item['codePostal'],
+        codeCommune = item['codeCommune'],
+        nomCommune = item['nomCommune'],
+        libelleAcheminement = item['libelleAcheminement'];
 
   Map<String, dynamic> toJson() => {
         'codePostal': codePostal,

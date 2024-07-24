@@ -150,7 +150,7 @@ class _AppState extends State<AppContent> {
                       : null),
                   cells: [
                     DataCell(Text(code.nomCommune)),
-                    DataCell(Text(code.codeCommune.toString()))
+                    DataCell(Text(code.codeCommune))
                   ]),
             )
             .toList(),
