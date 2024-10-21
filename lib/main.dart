@@ -90,7 +90,7 @@ class _AppState extends State<AppContent> {
       List<dynamic> json = jsonDecode(response.body) as List<dynamic>;
 
       codes = List<Code>.generate(
-          json.length, (i) => Code.fromJson(json.elementAt(i)));
+          json.length, (int index) => Code.fromJson(json.elementAt(index)));
     }
     if (response.statusCode == 404) {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
