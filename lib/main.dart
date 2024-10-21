@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:data_table_2/data_table_2.dart';
 import 'package:http/http.dart';
 
 import 'package:recherche_code_postal/utils/code.dart';
@@ -11,18 +10,15 @@ import 'package:recherche_code_postal/utils/code.dart';
 
 const String serviceUrl = 'https://apicarto.ign.fr/api/codes-postaux/communes/';
 
-void main() {
-  MaterialApp materialApp = MaterialApp(
-    title: 'Recherche Code postal',
-    home: Scaffold(
-        appBar: AppBar(
-            backgroundColor: Colors.amber,
-            title: const Text('Recherche de communes par code postal',
-                style: TextStyle(fontSize: 18))),
-        body: const AppContent()),
-  );
-  runApp(materialApp);
-}
+void main() => runApp(MaterialApp(
+      title: 'Recherche Code postal',
+      home: Scaffold(
+          appBar: AppBar(
+              backgroundColor: Colors.amber,
+              title: const Text('Recherche de communes par code postal',
+                  style: TextStyle(fontSize: 18))),
+          body: const AppContent()),
+    ));
 
 class AppContent extends StatefulWidget {
   const AppContent({super.key});
@@ -42,8 +38,6 @@ class _AppState extends State<AppContent> {
       content: Text('Le code postal n\'est pas attribué'),
       duration: Duration(seconds: 2),
       margin: EdgeInsets.only(bottom: 60.0, left: 10, right: 10));
-
-  //
 
   final textFieldController = TextEditingController();
 
@@ -76,10 +70,6 @@ class _AppState extends State<AppContent> {
           : b.codeCommune.compareTo(a.codeCommune));
     }
   }
-
-  final headerColor = WidgetStatePropertyAll(Colors.grey.withOpacity(0.3));
-
-  //
 
   void callService() async {
     String requestUrl = serviceUrl + textFieldController.text;
@@ -124,37 +114,39 @@ class _AppState extends State<AppContent> {
   Widget build(BuildContext context) {
     return Column(children: [
       Expanded(
-          child: DataTable2(
-        sortAscending: sortAsc,
-        sortColumnIndex: selectedCol,
-        headingRowColor: headerColor,
-        columns: <DataColumn>[
-          DataColumn(
-              label: const Text(
-                'Commune',
-              ),
-              onSort: ((columnIndex, ascending) =>
-                  setState(() => sortDataTable(columnIndex, ascending)))),
-          DataColumn(
-              label: const Text(
-                'Code Insee',
-              ),
-              onSort: ((columnIndex, ascending) =>
-                  setState(() => sortDataTable(columnIndex, ascending)))),
-        ],
-        rows: codes
-            .map(
-              (code) => DataRow(
-                  color: WidgetStatePropertyAll((rowColorIndex++).isOdd
-                      ? Colors.grey.withOpacity(0.15)
-                      : null),
-                  cells: [
-                    DataCell(Text(code.nomCommune)),
-                    DataCell(Text(code.codeCommune))
-                  ]),
-            )
-            .toList(),
-      )),
+          child: ListView(children: [
+        DataTable(
+          sortAscending: sortAsc,
+          sortColumnIndex: selectedCol,
+          headingRowColor: const WidgetStatePropertyAll(Color(0xFFE1DCE2)),
+          columns: <DataColumn>[
+            DataColumn(
+                label: const Text(
+                  'Commune',
+                ),
+                onSort: ((columnIndex, ascending) =>
+                    setState(() => sortDataTable(columnIndex, ascending)))),
+            DataColumn(
+                label: const Text(
+                  'Code Insee',
+                ),
+                onSort: ((columnIndex, ascending) =>
+                    setState(() => sortDataTable(columnIndex, ascending)))),
+          ],
+          rows: codes
+              .map(
+                (code) => DataRow(
+                    color: WidgetStatePropertyAll((rowColorIndex++).isOdd
+                        ? const Color(0xFFF0EAF1)
+                        : null),
+                    cells: [
+                      DataCell(Text(code.nomCommune)),
+                      DataCell(Text(code.codeCommune))
+                    ]),
+              )
+              .toList(),
+        )
+      ])),
       TextField(
         controller: textFieldController,
         decoration: textFieldDecoration,
