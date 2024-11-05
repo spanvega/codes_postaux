@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
@@ -114,39 +115,36 @@ class _AppState extends State<AppContent> {
   Widget build(BuildContext context) {
     return Column(children: [
       Expanded(
-          child: ListView(children: [
-        DataTable(
-          sortAscending: sortAsc,
-          sortColumnIndex: selectedCol,
-          headingRowColor: const WidgetStatePropertyAll(Color(0xFFE1DCE2)),
-          columns: <DataColumn>[
-            DataColumn(
-                label: const Text(
-                  'Commune',
-                ),
-                onSort: ((columnIndex, ascending) =>
-                    setState(() => sortDataTable(columnIndex, ascending)))),
-            DataColumn(
-                label: const Text(
-                  'Code Insee',
-                ),
-                onSort: ((columnIndex, ascending) =>
-                    setState(() => sortDataTable(columnIndex, ascending)))),
-          ],
-          rows: codes
-              .map(
-                (code) => DataRow(
-                    color: WidgetStatePropertyAll((rowColorIndex++).isOdd
-                        ? const Color(0xFFF0EAF1)
-                        : null),
-                    cells: [
-                      DataCell(Text(code.nomCommune)),
-                      DataCell(Text(code.codeCommune))
-                    ]),
-              )
-              .toList(),
-        )
-      ])),
+          child: DataTable2(
+        sortAscending: sortAsc,
+        sortColumnIndex: selectedCol,
+        headingRowColor: const WidgetStatePropertyAll(Color(0xFFE1DCE2)),
+        columns: <DataColumn>[
+          DataColumn(
+              label: const Text(
+                'Commune',
+              ),
+              onSort: ((columnIndex, ascending) =>
+                  setState(() => sortDataTable(columnIndex, ascending)))),
+          DataColumn(
+              label: const Text(
+                'Code Insee',
+              ),
+              onSort: ((columnIndex, ascending) =>
+                  setState(() => sortDataTable(columnIndex, ascending)))),
+        ],
+        rows: codes
+            .map(
+              (code) => DataRow(
+                  color: WidgetStatePropertyAll(
+                      (rowColorIndex++).isOdd ? const Color(0xFFF0EAF1) : null),
+                  cells: [
+                    DataCell(Text(code.nomCommune)),
+                    DataCell(Text(code.codeCommune))
+                  ]),
+            )
+            .toList(),
+      )),
       TextField(
         controller: textFieldController,
         decoration: textFieldDecoration,

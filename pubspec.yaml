@@ -9,6 +9,7 @@ environment:
   sdk: '>=3.3.4 <4.0.0'
 
 dependencies:
+  data_table_2: ^2.5.15
   flutter:
     sdk: flutter
 
