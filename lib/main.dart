@@ -38,16 +38,19 @@ class _AppState extends State<AppContent> {
       behavior: SnackBarBehavior.floating,
       content: Text('Le code postal n\'est pas attribué'),
       duration: Duration(seconds: 2),
-      margin: EdgeInsets.only(bottom: 60.0, left: 10, right: 10));
+      margin: EdgeInsets.only(bottom: 65.0, left: 15, right: 15));
 
   final textFieldController = TextEditingController();
 
   final InputDecoration textFieldDecoration = const InputDecoration(
       border: InputBorder.none,
-      contentPadding: EdgeInsets.only(left: 15),
-      fillColor: Colors.amberAccent,
+      contentPadding: EdgeInsets.all(15),
+      fillColor: Colors.amber,
       filled: true,
-      hintText: 'Entrez le code postal');
+      focusedBorder: InputBorder.none,
+      hintText: 'Entrez le code postal',
+      suffixIcon: Icon(Icons.search),
+      suffixIconColor: Colors.white);
 
   final List<TextInputFormatter> textFieldFormatter = <TextInputFormatter>[
     FilteringTextInputFormatter.allow(RegExp('[0-9]')),
@@ -103,55 +106,55 @@ class _AppState extends State<AppContent> {
 
   @override
   void initState() {
-    super.initState();
     textFieldController.addListener(() {
       if (textFieldController.text.characters.length == 5) {
         callService();
       }
     });
+    super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(children: [
-      Expanded(
-          child: DataTable2(
-        sortAscending: sortAsc,
-        sortColumnIndex: selectedCol,
-        headingRowColor: const WidgetStatePropertyAll(Color(0xFFE1DCE2)),
-        columns: <DataColumn>[
-          DataColumn(
-              label: const Text(
-                'Commune',
-              ),
-              onSort: ((columnIndex, ascending) =>
-                  setState(() => sortDataTable(columnIndex, ascending)))),
-          DataColumn(
-              label: const Text(
-                'Code Insee',
-              ),
-              onSort: ((columnIndex, ascending) =>
-                  setState(() => sortDataTable(columnIndex, ascending)))),
-        ],
-        rows: codes
-            .map(
-              (code) => DataRow(
-                  color: WidgetStatePropertyAll(
-                      (rowColorIndex++).isOdd ? const Color(0xFFF0EAF1) : null),
-                  cells: [
-                    DataCell(Text(code.nomCommune)),
-                    DataCell(Text(code.codeCommune))
-                  ]),
-            )
-            .toList(),
-      )),
-      TextField(
-        controller: textFieldController,
-        decoration: textFieldDecoration,
-        inputFormatters: textFieldFormatter,
-      )
-    ]);
-  }
+  Widget build(BuildContext context) => Column(children: [
+        Expanded(
+            child: DataTable2(
+          sortAscending: sortAsc,
+          sortColumnIndex: selectedCol,
+          headingRowColor: const WidgetStatePropertyAll(Color(0xFFE1DCE2)),
+          columns: <DataColumn>[
+            DataColumn(
+                label: const Text(
+                  'Commune',
+                ),
+                onSort: ((columnIndex, ascending) =>
+                    setState(() => sortDataTable(columnIndex, ascending)))),
+            DataColumn(
+                label: const Text(
+                  'Code Insee',
+                ),
+                onSort: ((columnIndex, ascending) =>
+                    setState(() => sortDataTable(columnIndex, ascending)))),
+          ],
+          rows: codes
+              .map(
+                (code) => DataRow(
+                    color: WidgetStatePropertyAll((rowColorIndex++).isOdd
+                        ? const Color(0xFFF0EAF1)
+                        : null),
+                    cells: [
+                      DataCell(Text(code.nomCommune)),
+                      DataCell(Text(code.codeCommune))
+                    ]),
+              )
+              .toList(),
+        )),
+        TextField(
+          controller: textFieldController,
+          cursorColor: Colors.white,
+          decoration: textFieldDecoration,
+          inputFormatters: textFieldFormatter,
+        )
+      ]);
 
   @override
   void dispose() {
