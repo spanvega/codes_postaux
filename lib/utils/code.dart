@@ -1,19 +1,13 @@
 class Code {
-  final String codePostal;
-  final String codeCommune;
-  final String nomCommune;
-  final String libelleAcheminement;
+  final String code;
+  final String nom;
 
-  Code.fromJson(Map<dynamic, dynamic> item)
-      : codePostal = item['codePostal'],
-        codeCommune = item['codeCommune'],
-        nomCommune = item['nomCommune'],
-        libelleAcheminement = item['libelleAcheminement'];
+  Code.fromJson(Map<String, dynamic> item)
+      : code = item['codeCommune'],
+        nom = item['nomCommune'];
 
   Map<String, dynamic> toJson() => {
-        'codePostal': codePostal,
-        'codeCommune': codeCommune,
-        'nomCommune': nomCommune,
-        'libelleAcheminement': libelleAcheminement
+        'code': code,
+        'nom': nom,
       };
 }
