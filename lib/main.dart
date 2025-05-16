@@ -15,7 +15,7 @@ const String api = 'https://apicarto.ign.fr/api/codes-postaux/communes';
 
 void main() => runApp(MaterialApp(
       theme: theme,
-      title: 'Recherche de code postal',
+      title: 'Codes Postaux',
       home: Scaffold(
           appBar: AppBar(
               titleSpacing: 10,
