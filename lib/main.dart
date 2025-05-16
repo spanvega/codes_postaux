@@ -89,12 +89,11 @@ class _AppState extends State<AppContent> {
 
       codes = List<Code>.generate(
           json.length, (int index) => Code.fromJson(json.elementAt(index)));
-
-      sortDataTable(0, true);
     } else if (response.statusCode == 404) {
       displaySnackbar();
       codes.clear();
     }
+    sortDataTable(0, true);
 
     textFieldController.clear();
   }
