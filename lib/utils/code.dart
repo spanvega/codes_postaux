@@ -1,13 +1,8 @@
 class Code {
-  final String code;
-  final String nom;
+  final String codeInsee, codePostal, ville;
 
-  Code.fromJson(Map<String, dynamic> item)
-      : code = item['codeCommune'],
-        nom = item['nomCommune'];
+  Code.fromValues(this.codeInsee, this.codePostal, this.ville);
 
-  Map<String, dynamic> toJson() => {
-        'code': code,
-        'nom': nom,
-      };
+  Map<String, dynamic> toJson() =>
+      {'codeInsee': codeInsee, 'codePostal': codePostal, 'ville': ville};
 }

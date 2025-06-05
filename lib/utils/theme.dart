@@ -3,9 +3,16 @@ import 'package:flutter/material.dart';
 const Color primaryColor = Colors.amber;
 const Color secondaryColor = Colors.white;
 
-OutlineInputBorder textFieldBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(10),
+//
+
+BorderRadius borderRadius = BorderRadius.circular(10);
+
+final OutlineInputBorder borderTextField = OutlineInputBorder(
+    borderRadius: borderRadius,
     borderSide: const BorderSide(style: BorderStyle.none));
+
+const TextStyle styleAutoSizeText =
+    TextStyle(color: secondaryColor, fontSize: 16);
 
 //
 
@@ -22,8 +29,8 @@ ThemeData get theme => ThemeData(
         hoverElevation: 0),
     hoverColor: Colors.transparent,
     inputDecorationTheme: InputDecorationTheme(
-        focusedBorder: textFieldBorder,
-        enabledBorder: textFieldBorder,
+        focusedBorder: borderTextField,
+        enabledBorder: borderTextField,
         contentPadding: const EdgeInsets.all(10),
         fillColor: secondaryColor,
         filled: true,
