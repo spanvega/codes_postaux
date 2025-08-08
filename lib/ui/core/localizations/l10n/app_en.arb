@@ -1,0 +1,53 @@
+{
+  "titre": "Postal Codes",
+  "@titre": {
+    "description": "The application title"
+  },
+  "voirLeProjet": "View roject",
+  "@voirLeProjet": {
+    "description": "Button to view the project"
+  },
+    "arrondissement": "{count, plural, =1{1st District} other{{count}th District}}",
+  "@arrondissement": {
+    "description": "Formatting of the district",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }},
+    "quartier": "{count, plural, =1{1st Neighborhood} other{{count}th Neighborhood}}",
+  "@quartier": {
+    "description": "Formatting of the neighborhood",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }},
+
+  "nonAttribue": "The postal code is not assigned",
+  "@nonAttribue": {
+    "description": "Message when the postal code is not assigned"
+  },
+  "ville": "City",
+  "@ville": {
+    "description": "Label for the city"
+  },
+  "codePostal": "Postal Code",
+  "@codePostal": {
+    "description": "Label for the postal code"
+  },
+  "saisieCodePostal": "Enter the postal code",
+  "@saisieCodePostal": {
+    "description": "Input field for the postal code"
+  },
+  "saisieVille": "Enter the city",
+  "@saisieVille": {
+    "description": "Input field for the city"
+  },
+  "inverserRecherche": "Swap search",
+  "@inverserRecherche": {
+    "description": "Button to swap the search"
+  }
+}

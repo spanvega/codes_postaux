@@ -1,0 +1,53 @@
+{
+  "titre": "Codes Postaux",
+  "@titre": {
+    "description": "Le titre de l'application"
+  },
+  "voirLeProjet": "Voir le projet",
+  "@voirLeProjet": {
+    "description": "Bouton pour voir le projet"
+  },
+    "arrondissement": "{count, plural, =1{1er Arrondissement} other{{count}e Arrondissement}}",
+  "@arrondissement": {
+    "description": "Formatage de l'arrondissement",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }},
+    "quartier": "{count, plural, =1{1er Quartier} other{{count}e Quartier}}",
+  "@quartier": {
+    "description": "Formatage du quartier",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }},
+
+  "nonAttribue": "Le code postal n'est pas attribué",
+  "@nonAttribue": {
+    "description": "Message lorsque le code postal n'est pas attribué"
+  },
+  "ville": "Ville",
+  "@ville": {
+    "description": "Libellé pour la ville"
+  },
+  "codePostal": "Code Postal",
+  "@codePostal": {
+    "description": "Libellé pour le code postal"
+  },
+  "saisieCodePostal": "Saisissez le code postal",
+  "@saisieCodePostal": {
+    "description": "Champ de saisie pour le code postal"
+  },
+  "saisieVille": "Saisissez la ville",
+  "@saisieVille": {
+    "description": "Champ de saisie pour la ville"
+  },
+  "inverserRecherche": "Inverser la recherche",
+  "@inverserRecherche": {
+    "description": "Bouton pour inverser la recherche"
+  }
+}

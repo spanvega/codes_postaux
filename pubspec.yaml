@@ -3,7 +3,7 @@ description: "Recherche de code Postal"
 
 publish_to: 'none'
 
-version: 2.0.0+1
+version: 2.0.0+2
 
 environment:
   sdk: '>=3.3.4 <4.0.0'
@@ -17,7 +17,9 @@ dependencies:
 
   alphanum_comparator: ^2.0.3
   data_table_2: ^2.6.0
+  flutter_native_splash: ^2.4.6
   http: ^1.4.0
+  provider: ^6.1.5
   url_launcher: ^6.3.1
 
 dev_dependencies:
@@ -29,3 +31,10 @@ dev_dependencies:
 flutter:
   generate: true
   uses-material-design: true
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/splash.png
+  android: true
+  ios: false
+  web: true
