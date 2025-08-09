@@ -1,5 +1,5 @@
 name: codes_postaux
-description: "Recherche de code Postal"
+description: "Recherche inversée de code Postal"
 
 publish_to: 'none'
 

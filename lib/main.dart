@@ -16,11 +16,10 @@ import 'package:codes_postaux/ui/table_codes/view_model/table_codes_view_model.d
 void main() => runApp(
       MultiProvider(
         providers: [
-          Provider(create: (context) => Carto()),
           Provider(create: (context) => Geo()),
           Provider(
               create: (context) =>
-                  CodeRepository(carto: context.read(), geo: context.read())),
+                  CodeRepository(carto: Carto(), geo: context.read())),
           Provider(
             create: (context) => OptionRepository(geo: context.read()),
           ),
