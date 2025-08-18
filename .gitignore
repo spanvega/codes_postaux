@@ -45,3 +45,7 @@ app.*.map.json
 .firebase/
 .firebaserc
 firebase.json
+
+analysis_options.yaml
+pubspec.lock
+.metadata
