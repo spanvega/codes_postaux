@@ -10,7 +10,7 @@ import 'package:codes_postaux/utils/result.dart';
 const String url = 'https://geo.api.gouv.fr/communes';
 
 class Geo {
-  Future<Result<List<dynamic>>> call(String parameters) async {
+  Future<Result<List<dynamic>>> _call(String parameters) async {
     try {
       Response response = await get(Uri.parse('$url?$parameters'));
 
@@ -29,7 +29,7 @@ class Geo {
   final String _searchFields = 'code,departement,nom&boost=population&limit=4';
 
   Future<Result<List<dynamic>>> searchByCity(String city) =>
-      call('nom=$city&fields=$_searchFields');
+      _call('nom=$city&fields=$_searchFields');
 
   //
 
@@ -37,8 +37,8 @@ class Geo {
       'bbox,code,codesPostaux,contour,departement,nom,mairie,population,region,surface';
 
   Future<Result<List<dynamic>>> searchByCode(String code) =>
-      call('code=$code&fields=$_queryFields');
+      _call('code=$code&fields=$_queryFields');
 
   Future<Result<List<dynamic>>> searchByLatLon(double lat, double lon) =>
-      call('lat=$lat&lon=$lon&fields=$_queryFields');
+      _call('lat=$lat&lon=$lon&fields=$_queryFields');
 }

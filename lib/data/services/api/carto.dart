@@ -10,7 +10,7 @@ import 'package:codes_postaux/utils/result.dart';
 const String url = 'https://apicarto.ign.fr/api/codes-postaux/communes';
 
 class Carto {
-  Future<Result<List<dynamic>>> call(String parameters) async {
+  Future<Result<List<dynamic>>> _call(String parameters) async {
     try {
       Response response = await get(Uri.parse('$url/$parameters'));
 
@@ -24,5 +24,5 @@ class Carto {
     }
   }
 
-  Future<Result<List<dynamic>>> search(String postalCode) => call(postalCode);
+  Future<Result<List<dynamic>>> search(String postalCode) => _call(postalCode);
 }
