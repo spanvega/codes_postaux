@@ -19,9 +19,9 @@ void main() => runApp(
           Provider(create: (context) => Geo()),
           Provider(
               create: (context) =>
-                  CodeRepository(carto: Carto(), geo: context.read())),
+                  CodeRepository(carto: Carto(), geo: context.read<Geo>())),
           Provider(
-            create: (context) => OptionRepository(geo: context.read()),
+            create: (context) => OptionRepository(geo: context.read<Geo>()),
           ),
           ChangeNotifierProvider(create: (context) => TableCodesViewModel())
         ],

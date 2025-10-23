@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
+import 'package:codes_postaux/data/repositories/code/code_repository.dart';
+import 'package:codes_postaux/data/repositories/option/option_repository.dart';
 import 'package:codes_postaux/ui/core/localizations/app_localizations.dart';
 import 'package:codes_postaux/ui/core/themes/colors.dart';
 import 'package:codes_postaux/ui/core/themes/dimens.dart';
@@ -55,8 +57,8 @@ class _HomeState extends State<Home> {
         Expanded(
             child: ListenableBuilder(
                 listenable: context.read<TableCodesViewModel>(),
-                builder: (context, child) =>
-                    TableCodes(viewModel: context.read()))),
+                builder: (context, child) => TableCodes(
+                    viewModel: context.read<TableCodesViewModel>()))),
         Container(
           color: AppColors.amber2,
           child: Padding(
@@ -77,11 +79,14 @@ class _HomeState extends State<Home> {
                                       .viewModel.inverted
                                   ? SearchCode(
                                       viewModel: SearchCodeViewModel(
-                                          codeRepository: context.read()))
+                                          codeRepository:
+                                              context.read<CodeRepository>()))
                                   : SearchCity(
                                       viewModel: SearchCityViewModel(
-                                          codeRepository: context.read(),
-                                          optionRepository: context.read())))))
+                                          codeRepository:
+                                              context.read<CodeRepository>(),
+                                          optionRepository: context
+                                              .read<OptionRepository>())))))
                 ],
               )),
         )
