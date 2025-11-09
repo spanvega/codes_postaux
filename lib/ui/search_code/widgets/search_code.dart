@@ -18,24 +18,16 @@ class SearchCode extends StatefulWidget {
 }
 
 class _SearchCodeState extends State<SearchCode> {
-  final textFieldController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
     widget.viewModel.addListener(_onViewModelChanged);
-    textFieldController.addListener(() {
-      if (textFieldController.text.characters.length == 5) {
-        widget.viewModel.searchByCode.execute(textFieldController.text);
-        textFieldController.clear();
-      }
-    });
   }
 
   @override
   void dispose() {
     widget.viewModel.removeListener(_onViewModelChanged);
-    textFieldController.dispose();
+    // widget.viewModel.textFieldController.dispose();
     super.dispose();
   }
 
@@ -48,10 +40,10 @@ class _SearchCodeState extends State<SearchCode> {
             child: Text(AppLocalizations.of(context)!.nonAttribue)),
         duration: const Duration(seconds: 1),
       ));
-      context.read<TableCodesViewModel>().clearData();
+      context.read<TableCodesViewModel>().clear();
       widget.viewModel.error = null;
     } else {
-      context.read<TableCodesViewModel>().codes =
+      context.read<TableCodesViewModel>().value =
           widget.viewModel.codesFromCode;
     }
   }
@@ -59,7 +51,7 @@ class _SearchCodeState extends State<SearchCode> {
   @override
   Widget build(BuildContext context) => TextField(
       autofocus: true,
-      controller: textFieldController,
+      controller: widget.viewModel.textFieldController,
       decoration: InputDecoration(
         hintText: AppLocalizations.of(context)!.saisieCodePostal,
         suffixIcon: const Icon(Icons.search),

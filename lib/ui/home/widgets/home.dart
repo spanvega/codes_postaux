@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:codes_postaux/data/repositories/code/code_repository.dart';
 import 'package:codes_postaux/data/repositories/option/option_repository.dart';
+import 'package:codes_postaux/data/services/api/geo.dart';
 import 'package:codes_postaux/ui/core/localizations/app_localizations.dart';
 import 'package:codes_postaux/ui/core/themes/colors.dart';
 import 'package:codes_postaux/ui/core/themes/dimens.dart';
@@ -37,7 +38,7 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
-  void _onViewModelChanged() => context.read<TableCodesViewModel>().clearData();
+  void _onViewModelChanged() => context.read<TableCodesViewModel>().clear();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -85,8 +86,8 @@ class _HomeState extends State<Home> {
                                       viewModel: SearchCityViewModel(
                                           codeRepository:
                                               context.read<CodeRepository>(),
-                                          optionRepository: context
-                                              .read<OptionRepository>())))))
+                                          optionRepository: OptionRepository(
+                                              geo: context.read<Geo>()))))))
                 ],
               )),
         )

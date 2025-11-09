@@ -4,41 +4,32 @@ import 'package:alphanum_comparator/alphanum_comparator.dart';
 
 import 'package:codes_postaux/data/repositories/code/model/code.dart';
 
-class TableCodesViewModel extends ChangeNotifier {
-  TableCodesViewModel();
+class TableCodesViewModel extends ValueNotifier<List<Code>> {
+  TableCodesViewModel() : super(<Code>[]);
 
-  int rowColorIndex = 0;
+  final sorters = [
+    (Code a, Code b) => AlphanumComparator.compare(a.ville, b.ville),
+    (Code a, Code b) => a.codePostal.compareTo(b.codePostal)
+  ];
+
   int selectedCol = 0;
   bool sortAsc = true;
 
-  //
+  @override
+  set value(List<Code> codes) {
+    selectedCol = 0;
+    sortAsc = true;
 
-  List<Code> _codes = <Code>[];
-  List<Code> get codes => _codes;
-
-  set codes(List<Code> value) {
-    _codes = value;
-    sortData(0, true);
+    super.value = codes..sort((a, b) => sorters[0](a, b));
   }
 
-  //
+  void clear() => value = [];
 
-  void clearData() {
-    _codes.clear();
-    notifyListeners();
-  }
-
-  void sortData(int columnIndex, bool ascending) {
-    rowColorIndex = 0;
+  void sort(int columnIndex, bool ascending) {
     selectedCol = columnIndex;
     sortAsc = ascending;
 
-    final sorters = [
-      (Code a, Code b) => AlphanumComparator.compare(a.ville, b.ville),
-      (Code a, Code b) => a.codePostal.compareTo(b.codePostal)
-    ];
-
-    _codes.sort((a, b) =>
+    value.sort((a, b) =>
         sortAsc ? sorters[columnIndex](a, b) : sorters[columnIndex](b, a));
 
     notifyListeners();

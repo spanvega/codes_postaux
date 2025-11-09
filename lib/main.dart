@@ -4,7 +4,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'package:codes_postaux/data/repositories/code/code_repository.dart';
-import 'package:codes_postaux/data/repositories/option/option_repository.dart';
 import 'package:codes_postaux/data/services/api/carto.dart';
 import 'package:codes_postaux/data/services/api/geo.dart';
 import 'package:codes_postaux/ui/core/localizations/app_localizations.dart';
@@ -20,9 +19,6 @@ void main() => runApp(
           Provider(
               create: (context) =>
                   CodeRepository(carto: Carto(), geo: context.read<Geo>())),
-          Provider(
-            create: (context) => OptionRepository(geo: context.read<Geo>()),
-          ),
           ChangeNotifierProvider(create: (context) => TableCodesViewModel())
         ],
         child: const MainApp(),

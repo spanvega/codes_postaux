@@ -16,7 +16,7 @@ class HomeViewModel extends ChangeNotifier {
 
   //
 
-  Future<Result<bool>> _gotoProject() async {
+  Future<Result<void>> _gotoProject() async {
     bool success = await launchUrl(Uri(
         scheme: 'https', host: 'github.com', path: 'spanvega/codes_postaux'));
 

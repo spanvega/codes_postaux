@@ -32,7 +32,7 @@ class SearchCityViewModel extends ChangeNotifier {
 
   List<Option> _options = <Option>[];
 
-  Future<Result<List<Option>>> updateOptions(String search) async {
+  Future<Result<void>> updateOptions(String search) async {
     try {
       final Result<List<Option>> result =
           await _optionRepository.searchByCity(search);

@@ -3,18 +3,17 @@ import 'package:flutter/services.dart';
 
 import 'package:codes_postaux/data/repositories/code/code_repository.dart';
 import 'package:codes_postaux/data/repositories/code/model/code.dart';
-import 'package:codes_postaux/utils/command.dart';
 import 'package:codes_postaux/utils/result.dart';
 
 class SearchCodeViewModel extends ChangeNotifier {
   SearchCodeViewModel({required CodeRepository codeRepository})
       : _codeRepository = codeRepository {
-    searchByCode = Command1<void, String>(_searchByCode);
+    textFieldController = TextEditingController()..addListener(_validateSearch);
   }
 
   final CodeRepository _codeRepository;
 
-  late final Command1<void, String> searchByCode;
+  late final TextEditingController textFieldController;
 
   Exception? error;
 
@@ -26,6 +25,13 @@ class SearchCodeViewModel extends ChangeNotifier {
   ];
 
   //
+
+  void _validateSearch() {
+    if (textFieldController.text.characters.length == 5) {
+      _searchByCode(textFieldController.text);
+      textFieldController.clear();
+    }
+  }
 
   List<Code> _codesFromCode = <Code>[];
   List<Code> get codesFromCode => _codesFromCode;

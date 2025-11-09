@@ -32,7 +32,7 @@ class _SearchCityState extends State<SearchCity> {
     super.dispose();
   }
 
-  void _onViewModelChanged() => context.read<TableCodesViewModel>().codes =
+  void _onViewModelChanged() => context.read<TableCodesViewModel>().value =
       widget.viewModel.codesFromCity;
 
   @override

@@ -3,7 +3,7 @@
   "@titre": {
     "description": "The application title"
   },
-  "voirLeProjet": "View roject",
+  "voirLeProjet": "View project",
   "@voirLeProjet": {
     "description": "Button to view the project"
   },

@@ -12,7 +12,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get titre => 'Postal Codes';
 
   @override
-  String get voirLeProjet => 'View roject';
+  String get voirLeProjet => 'View project';
 
   @override
   String arrondissement(num count) {
