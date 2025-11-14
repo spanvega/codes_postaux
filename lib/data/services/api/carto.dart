@@ -24,5 +24,6 @@ class Carto {
     }
   }
 
-  Future<Result<List<dynamic>>> search(String postalCode) => _call(postalCode);
+  Future<Result<List<dynamic>>> cityByPostalCode(String codePostal) =>
+      _call(codePostal);
 }

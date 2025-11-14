@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:codes_postaux/data/repositories/code/code_repository.dart';
-import 'package:codes_postaux/data/repositories/code/model/code.dart';
+import 'package:codes_postaux/data/repositories/codes/codes_repository.dart';
+import 'package:codes_postaux/data/repositories/codes/model/code.dart';
 import 'package:codes_postaux/utils/result.dart';
 
 class SearchCodeViewModel extends ChangeNotifier {
-  SearchCodeViewModel({required CodeRepository codeRepository})
-      : _codeRepository = codeRepository {
+  SearchCodeViewModel({required CodesRepository codesRepository})
+    : _codesRepository = codesRepository {
     textFieldController = TextEditingController()..addListener(_validateSearch);
   }
 
-  final CodeRepository _codeRepository;
+  final CodesRepository _codesRepository;
 
   late final TextEditingController textFieldController;
 
@@ -21,14 +21,14 @@ class SearchCodeViewModel extends ChangeNotifier {
 
   final List<TextInputFormatter> numericFormatter = <TextInputFormatter>[
     FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-    LengthLimitingTextInputFormatter(5)
+    LengthLimitingTextInputFormatter(5),
   ];
 
   //
 
   void _validateSearch() {
     if (textFieldController.text.characters.length == 5) {
-      _searchByCode(textFieldController.text);
+      _cityByPostalCode(textFieldController.text);
       textFieldController.clear();
     }
   }
@@ -36,8 +36,10 @@ class SearchCodeViewModel extends ChangeNotifier {
   List<Code> _codesFromCode = <Code>[];
   List<Code> get codesFromCode => _codesFromCode;
 
-  Future<Result<void>> _searchByCode(String code) async {
-    final Result<List<Code>> result = await _codeRepository.searchByCode(code);
+  Future<Result<void>> _cityByPostalCode(String codePostal) async {
+    final Result<List<Code>> result = await _codesRepository.cityByPostalCode(
+      codePostal,
+    );
 
     switch (result) {
       case Ok<List<Code>>():

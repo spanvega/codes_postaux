@@ -63,7 +63,7 @@ import 'app_localizations_fr.dart';
 /// property.
 abstract class AppLocalizations {
   AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -86,16 +86,16 @@ abstract class AppLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('fr')
+    Locale('fr'),
   ];
 
   /// Le titre de l'application
@@ -110,17 +110,17 @@ abstract class AppLocalizations {
   /// **'Voir le projet'**
   String get voirLeProjet;
 
-  /// Formatage de l'arrondissement
+  /// Formatage des numéros d'arrondissement
   ///
   /// In fr, this message translates to:
-  /// **'{count, plural, =1{1er Arrondissement} other{{count}e Arrondissement}}'**
-  String arrondissement(num count);
+  /// **'{count, select, 1{1er} other{{count}e}}'**
+  String numero(String count);
 
-  /// Formatage du quartier
+  /// Etiquette arrondissement
   ///
   /// In fr, this message translates to:
-  /// **'{count, plural, =1{1er Quartier} other{{count}e Quartier}}'**
-  String quartier(num count);
+  /// **'Arrondissement'**
+  String get arrondissement;
 
   /// Message lorsque le code postal n'est pas attribué
   ///
@@ -186,8 +186,9 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }

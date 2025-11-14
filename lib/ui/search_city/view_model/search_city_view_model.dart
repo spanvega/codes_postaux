@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:codes_postaux/data/repositories/code/code_repository.dart';
-import 'package:codes_postaux/data/repositories/code/model/code.dart';
-import 'package:codes_postaux/data/repositories/option/model/option.dart';
-import 'package:codes_postaux/data/repositories/option/option_repository.dart';
+import 'package:codes_postaux/data/repositories/codes/codes_repository.dart';
+import 'package:codes_postaux/data/repositories/codes/model/code.dart';
+import 'package:codes_postaux/data/repositories/options/model/option.dart';
+import 'package:codes_postaux/data/repositories/options/options_repository.dart';
 import 'package:codes_postaux/utils/command.dart';
 import 'package:codes_postaux/utils/result.dart';
 
 class SearchCityViewModel extends ChangeNotifier {
-  SearchCityViewModel(
-      {required CodeRepository codeRepository,
-      required OptionRepository optionRepository})
-      : _codeRepository = codeRepository,
-        _optionRepository = optionRepository {
-    searchByCity = Command1<void, int>(_searchByCity);
+  SearchCityViewModel({
+    required CodesRepository codesRepository,
+    required OptionsRepository optionsRepository,
+  }) : _codesRepository = codesRepository,
+       _optionsRepository = optionsRepository {
+    postalCodeByCode = Command1<void, int>(_postalCodeByCode);
   }
 
-  final CodeRepository _codeRepository;
-  final OptionRepository _optionRepository;
+  final CodesRepository _codesRepository;
+  final OptionsRepository _optionsRepository;
 
-  late final Command1<void, int> searchByCity;
+  late final Command1<void, int> postalCodeByCode;
 
   //
 
   final List<TextInputFormatter> alphaFormatter = <TextInputFormatter>[
-    FilteringTextInputFormatter.allow(RegExp('[a-zA-Z-\' ]'))
+    FilteringTextInputFormatter.allow(RegExp('[a-zA-Z-\' ]')),
   ];
 
   //
@@ -34,8 +34,8 @@ class SearchCityViewModel extends ChangeNotifier {
 
   Future<Result<void>> updateOptions(String search) async {
     try {
-      final Result<List<Option>> result =
-          await _optionRepository.searchByCity(search);
+      final Result<List<Option>> result = await _optionsRepository
+          .citiesListByPopulation(search);
       switch (result) {
         case Ok<List<Option>>():
           _options = result.value;
@@ -48,21 +48,24 @@ class SearchCityViewModel extends ChangeNotifier {
     }
   }
 
-  Future<List<String>> buildOptions(String search) async {
-    await updateOptions(search);
-
-    return List<String>.generate(
-        _options.length, (int index) => _options[index].label);
-  }
+  Future<List<String>> buildOptions(String search) async => search.isNotEmpty
+      ? updateOptions(search).then(
+          (_) => List<String>.generate(
+            _options.length,
+            (int index) => _options[index].label,
+          ),
+        )
+      : [];
 
   //
 
   List<Code> _codesFromCity = <Code>[];
   List<Code> get codesFromCity => _codesFromCity;
 
-  Future<Result<void>> _searchByCity(int index) async {
-    final Result<List<Code>> result =
-        await _codeRepository.searchByCity(_options[index].code);
+  Future<Result<void>> _postalCodeByCode(int index) async {
+    final Result<List<Code>> result = await _codesRepository.postalCodeByCode(
+      _options[index].code,
+    );
 
     switch (result) {
       case Ok<List<Code>>():

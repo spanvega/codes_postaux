@@ -39,12 +39,15 @@ class _SearchCityState extends State<SearchCity> {
   Widget build(BuildContext context) {
     late TextEditingController textEditingController;
     return Autocomplete<String>(
-        fieldViewBuilder: (BuildContext context,
+      fieldViewBuilder:
+          (
+            BuildContext context,
             TextEditingController fieldTextEditingController,
             FocusNode fieldFocusNode,
-            VoidCallback onFieldSubmitted) {
-          textEditingController = fieldTextEditingController;
-          return TextField(
+            VoidCallback onFieldSubmitted,
+          ) {
+            textEditingController = fieldTextEditingController;
+            return TextField(
               autofocus: true,
               controller: fieldTextEditingController,
               focusNode: fieldFocusNode,
@@ -54,40 +57,44 @@ class _SearchCityState extends State<SearchCity> {
               ),
               inputFormatters: widget.viewModel.alphaFormatter,
               keyboardType: TextInputType.text,
-              style: AppStyles.textPrimary);
-        },
-        optionsBuilder: (TextEditingValue textEditingValue) =>
-            textEditingValue.text.isNotEmpty
-                ? widget.viewModel.buildOptions(textEditingValue.text)
-                : Future.value(<String>[]),
-        onSelected: (String selection) => textEditingController.clear(),
-        optionsViewBuilder: (context, onSelected, options) => Align(
-            alignment: Alignment.bottomLeft,
-            child: SizedBox(
-                height: options.length * Dimens.itemHeight,
-                child: Material(
-                    borderRadius: AppTheme.borderTextField.borderRadius,
-                    clipBehavior: Clip.antiAlias,
-                    elevation: 1,
-                    child: ListView.builder(
-                      itemCount: options.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          GestureDetector(
-                              onTap: () {
-                                widget.viewModel.searchByCity.execute(index);
-                                onSelected(options.elementAt(index));
-                              },
-                              child: ListTile(
-                                  contentPadding: Dimens.textFieldContent,
-                                  minTileHeight: Dimens.itemHeight,
-                                  tileColor: index.isEven
-                                      ? AppColors.amber1
-                                      : AppColors.white,
-                                  title: Text(options.elementAt(index),
-                                      style: index.isEven
-                                          ? AppStyles.textSecondary
-                                          : AppStyles.textPrimary))),
-                    )))),
-        optionsViewOpenDirection: OptionsViewOpenDirection.up);
+              style: AppStyles.textPrimary,
+            );
+          },
+      optionsBuilder: (TextEditingValue textEditingValue) =>
+          widget.viewModel.buildOptions(textEditingValue.text),
+      onSelected: (String selection) => textEditingController.clear(),
+      optionsViewBuilder: (context, onSelected, options) => Align(
+        alignment: Alignment.bottomLeft,
+        child: SizedBox(
+          height: options.length * Dimens.itemHeight,
+          child: Material(
+            borderRadius: AppTheme.borderTextField.borderRadius,
+            clipBehavior: Clip.antiAlias,
+            elevation: 1,
+            child: ListView.builder(
+              itemCount: options.length,
+              itemBuilder: (BuildContext context, int index) => GestureDetector(
+                onTap: () {
+                  widget.viewModel.postalCodeByCode.execute(index);
+                  onSelected(options.elementAt(index));
+                },
+                child: ListTile(
+                  contentPadding: Dimens.textFieldContent,
+                  minTileHeight: Dimens.itemHeight,
+                  tileColor: index.isEven ? AppColors.amber1 : AppColors.white,
+                  title: Text(
+                    options.elementAt(index),
+                    style: index.isEven
+                        ? AppStyles.textSecondary
+                        : AppStyles.textPrimary,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      optionsViewOpenDirection: OptionsViewOpenDirection.up,
+    );
   }
 }

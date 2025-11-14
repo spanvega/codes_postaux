@@ -27,15 +27,22 @@ class _SearchCodeState extends State<SearchCode> {
   @override
   void dispose() {
     widget.viewModel.removeListener(_onViewModelChanged);
-    // widget.viewModel.textFieldController.dispose();
     super.dispose();
   }
 
   void _onViewModelChanged() {
     if (widget.viewModel.error != null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        /*
+        content: SizedBox(
+            height: Dimens.toolbarHeight,
+            child:
+                Center(child: Text(AppLocalizations.of(context)!.nonAttribue))),
+        duration: const Duration(seconds: 1),
+        padding: EdgeInsets.zero,
+        */
         content: Container(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
             height: Dimens.itemHeight,
             child: Text(AppLocalizations.of(context)!.nonAttribue)),
         duration: const Duration(seconds: 1),

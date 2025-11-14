@@ -7,25 +7,19 @@
   "@voirLeProjet": {
     "description": "Bouton pour voir le projet"
   },
-    "arrondissement": "{count, plural, =1{1er Arrondissement} other{{count}e Arrondissement}}",
+  "numero": "{count, select, 1{1er} other{{count}e}}",
+  "@numero": {
+    "description": "Formatage des numéros d'arrondissement",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "arrondissement": "Arrondissement",
   "@arrondissement": {
-    "description": "Formatage de l'arrondissement",
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "format": "compact"
-      }
-    }},
-    "quartier": "{count, plural, =1{1er Quartier} other{{count}e Quartier}}",
-  "@quartier": {
-    "description": "Formatage du quartier",
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "format": "compact"
-      }
-    }},
-
+    "description": "Etiquette arrondissement"
+  },
   "nonAttribue": "Le code postal n'est pas attribué",
   "@nonAttribue": {
     "description": "Message lorsque le code postal n'est pas attribué"

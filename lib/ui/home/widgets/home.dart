@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:codes_postaux/data/repositories/code/code_repository.dart';
-import 'package:codes_postaux/data/repositories/option/option_repository.dart';
+import 'package:codes_postaux/data/repositories/codes/codes_repository.dart';
+import 'package:codes_postaux/data/repositories/options/options_repository.dart';
 import 'package:codes_postaux/data/services/api/geo.dart';
 import 'package:codes_postaux/ui/core/localizations/app_localizations.dart';
 import 'package:codes_postaux/ui/core/themes/colors.dart';
@@ -42,54 +42,69 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-          titleSpacing: Dimens.paddingHorizontal,
-          toolbarHeight: Dimens.toolbarHeight,
-          title: Text(AppLocalizations.of(context)!.titre),
-          actions: [
-            FloatingActionButton.small(
-              tooltip: AppLocalizations.of(context)!.voirLeProjet,
-              child: const Icon(Icons.link),
-              onPressed: () => widget.viewModel.gotoProject.execute(),
-            ),
-            const SizedBox(width: Dimens.paddingHorizontal)
-          ]),
-      body: Column(children: [
+    appBar: AppBar(
+      titleSpacing: Dimens.paddingHorizontal,
+      toolbarHeight: Dimens.toolbarHeight,
+      title: Text(AppLocalizations.of(context)!.titre),
+      actions: [
+        FloatingActionButton.small(
+          tooltip: AppLocalizations.of(context)!.voirLeProjet,
+          child: const Icon(Icons.link),
+          onPressed: () => widget.viewModel.gotoProject.execute(),
+        ),
+        const SizedBox(width: Dimens.paddingHorizontal),
+      ],
+    ),
+    body: Column(
+      children: [
         Expanded(
-            child: ListenableBuilder(
-                listenable: context.read<TableCodesViewModel>(),
-                builder: (context, child) => TableCodes(
-                    viewModel: context.read<TableCodesViewModel>()))),
+          child: ListenableBuilder(
+            listenable: context.read<TableCodesViewModel>(),
+            builder: (context, child) =>
+                TableCodes(viewModel: context.read<TableCodesViewModel>()),
+          ),
+        ),
         Container(
           color: AppColors.amber2,
           child: Padding(
-              padding: Dimens.edgeInsetsScreenSymmetric,
-              child: Row(
-                spacing: Dimens.paddingHorizontal,
-                children: [
-                  FloatingActionButton.small(
-                      tooltip: AppLocalizations.of(context)!.inverserRecherche,
-                      child: const Icon(Icons.swap_vert),
-                      onPressed: () => widget.viewModel.invertSearch.execute()),
-                  Expanded(
-                      child: SizedBox(
-                          height: Dimens.itemHeight,
-                          child: ListenableBuilder(
-                              listenable: widget.viewModel.invertSearch,
-                              builder: (context, child) => widget
-                                      .viewModel.inverted
-                                  ? SearchCode(
-                                      viewModel: SearchCodeViewModel(
-                                          codeRepository:
-                                              context.read<CodeRepository>()))
-                                  : SearchCity(
-                                      viewModel: SearchCityViewModel(
-                                          codeRepository:
-                                              context.read<CodeRepository>(),
-                                          optionRepository: OptionRepository(
-                                              geo: context.read<Geo>()))))))
-                ],
-              )),
-        )
-      ]));
+            padding: Dimens.edgeInsetsScreenSymmetric,
+            child: Row(
+              spacing: Dimens.paddingHorizontal,
+              children: [
+                FloatingActionButton.small(
+                  tooltip: AppLocalizations.of(context)!.inverserRecherche,
+                  child: const Icon(Icons.swap_vert),
+                  onPressed: () => widget.viewModel.invertSearch.execute(),
+                ),
+                Expanded(
+                  child: SizedBox(
+                    height: Dimens.itemHeight,
+                    child: ListenableBuilder(
+                      listenable: widget.viewModel.invertSearch,
+                      builder: (context, child) => widget.viewModel.inverted
+                          ? SearchCode(
+                              viewModel: SearchCodeViewModel(
+                                codesRepository: context
+                                    .read<CodesRepository>(),
+                              ),
+                            )
+                          : SearchCity(
+                              viewModel: SearchCityViewModel(
+                                codesRepository: context
+                                    .read<CodesRepository>(),
+                                optionsRepository: OptionsRepository(
+                                  geo: context.read<Geo>(),
+                                ),
+                              ),
+                            ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }
