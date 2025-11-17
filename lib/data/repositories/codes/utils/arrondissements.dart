@@ -6,8 +6,7 @@ class Arrondissement {
 }
 
 class Ville {
-  final String nom;
-  final String codeInsee;
+  final String nom, codeInsee;
   final List<Arrondissement> arrondissements;
 
   Ville(this.nom, this.codeInsee, this.arrondissements);
@@ -23,7 +22,7 @@ final List<Ville> villes = [
     Arrondissement('69386', ['69006']),
     Arrondissement('69387', ['69007']),
     Arrondissement('69388', ['69008']),
-    Arrondissement('69389', ['69009'])
+    Arrondissement('69389', ['69009']),
   ]),
   Ville('Marseille', '13055', [
     Arrondissement('13201', ['13001']),
@@ -41,7 +40,7 @@ final List<Ville> villes = [
     Arrondissement('13213', ['13013']),
     Arrondissement('13214', ['13014']),
     Arrondissement('13215', ['13015']),
-    Arrondissement('13216', ['13016'])
+    Arrondissement('13216', ['13016']),
   ]),
   Ville('Paris', '75056', [
     Arrondissement('75101', ['75001']),
@@ -63,6 +62,6 @@ final List<Ville> villes = [
     Arrondissement('75117', ['75017']),
     Arrondissement('75118', ['75018']),
     Arrondissement('75119', ['75019']),
-    Arrondissement('75120', ['75020'])
-  ])
+    Arrondissement('75120', ['75020']),
+  ]),
 ];

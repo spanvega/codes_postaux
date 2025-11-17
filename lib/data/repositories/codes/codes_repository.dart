@@ -15,9 +15,9 @@ class CodesRepository {
   final Carto _carto;
   final Geo _geo;
 
-  Future<Result<List<Code>>> cityByPostalCode(String codePostal) async {
+  Future<Result<List<Code>>> citiesByPostalCode(String codePostal) async {
     try {
-      final result = await _carto.cityByPostalCode(codePostal);
+      final result = await _carto.citiesByPostalCode(codePostal);
       switch (result) {
         case Ok<List<dynamic>>():
           final List<dynamic> json = result.value;
@@ -37,9 +37,9 @@ class CodesRepository {
     }
   }
 
-  Future<Result<List<Code>>> postalCodeByCode(String codeInsee) async {
+  Future<Result<List<Code>>> postalCodesByCode(String codeInsee) async {
     try {
-      final result = await _geo.postalCodeByCode(codeInsee);
+      final result = await _geo.postalCodesByCode(codeInsee);
       switch (result) {
         case Ok<List<dynamic>>():
           final List<dynamic> json = result.value;

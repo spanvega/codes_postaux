@@ -28,7 +28,7 @@ class SearchCodeViewModel extends ChangeNotifier {
 
   void _validateSearch() {
     if (textFieldController.text.characters.length == 5) {
-      _cityByPostalCode(textFieldController.text);
+      _citiesByPostalCode(textFieldController.text);
       textFieldController.clear();
     }
   }
@@ -36,8 +36,8 @@ class SearchCodeViewModel extends ChangeNotifier {
   List<Code> _codesFromCode = <Code>[];
   List<Code> get codesFromCode => _codesFromCode;
 
-  Future<Result<void>> _cityByPostalCode(String codePostal) async {
-    final Result<List<Code>> result = await _codesRepository.cityByPostalCode(
+  Future<Result<void>> _citiesByPostalCode(String codePostal) async {
+    final Result<List<Code>> result = await _codesRepository.citiesByPostalCode(
       codePostal,
     );
 

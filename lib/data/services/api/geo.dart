@@ -39,7 +39,7 @@ class Geo {
 
   final String _postalCodeFields = 'codesPostaux,nom';
 
-  Future<Result<List<dynamic>>> postalCodeByCode(String codeInsee) =>
+  Future<Result<List<dynamic>>> postalCodesByCode(String codeInsee) =>
       _call('code=$codeInsee&fields=$_postalCodeFields');
 
   //

@@ -14,13 +14,13 @@ class SearchCityViewModel extends ChangeNotifier {
     required OptionsRepository optionsRepository,
   }) : _codesRepository = codesRepository,
        _optionsRepository = optionsRepository {
-    postalCodeByCode = Command1<void, int>(_postalCodeByCode);
+    postalCodesByCode = Command1<void, int>(_postalCodesByCode);
   }
 
   final CodesRepository _codesRepository;
   final OptionsRepository _optionsRepository;
 
-  late final Command1<void, int> postalCodeByCode;
+  late final Command1<void, int> postalCodesByCode;
 
   //
 
@@ -62,8 +62,8 @@ class SearchCityViewModel extends ChangeNotifier {
   List<Code> _codesFromCity = <Code>[];
   List<Code> get codesFromCity => _codesFromCity;
 
-  Future<Result<void>> _postalCodeByCode(int index) async {
-    final Result<List<Code>> result = await _codesRepository.postalCodeByCode(
+  Future<Result<void>> _postalCodesByCode(int index) async {
+    final Result<List<Code>> result = await _codesRepository.postalCodesByCode(
       _options[index].code,
     );
 

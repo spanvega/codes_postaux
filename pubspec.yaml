@@ -3,7 +3,7 @@ description: "Recherche inversée de code postal"
 
 publish_to: 'none'
 
-version: 2.0.0+2
+version: 2.2.0+2
 
 environment:
   sdk: ^3.10.0

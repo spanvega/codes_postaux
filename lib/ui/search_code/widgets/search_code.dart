@@ -32,21 +32,24 @@ class _SearchCodeState extends State<SearchCode> {
 
   void _onViewModelChanged() {
     if (widget.viewModel.error != null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        /*
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          /*
         content: SizedBox(
             height: Dimens.toolbarHeight,
             child:
                 Center(child: Text(AppLocalizations.of(context)!.nonAttribue))),
         duration: const Duration(seconds: 1),
-        padding: EdgeInsets.zero,
+        padding: .zero,
         */
-        content: Container(
-            alignment: Alignment.center,
+          content: Container(
+            alignment: .center,
             height: Dimens.itemHeight,
-            child: Text(AppLocalizations.of(context)!.nonAttribue)),
-        duration: const Duration(seconds: 1),
-      ));
+            child: Text(AppLocalizations.of(context)!.nonAttribue),
+          ),
+          duration: const Duration(seconds: 1),
+        ),
+      );
       context.read<TableCodesViewModel>().clear();
       widget.viewModel.error = null;
     } else {
@@ -57,13 +60,14 @@ class _SearchCodeState extends State<SearchCode> {
 
   @override
   Widget build(BuildContext context) => TextField(
-      autofocus: true,
-      controller: widget.viewModel.textFieldController,
-      decoration: InputDecoration(
-        hintText: AppLocalizations.of(context)!.saisieCodePostal,
-        suffixIcon: const Icon(Icons.search),
-      ),
-      inputFormatters: widget.viewModel.numericFormatter,
-      keyboardType: TextInputType.number,
-      style: AppStyles.textPrimary);
+    autofocus: true,
+    controller: widget.viewModel.textFieldController,
+    decoration: InputDecoration(
+      hintText: AppLocalizations.of(context)!.saisieCodePostal,
+      suffixIcon: const Icon(Icons.search),
+    ),
+    inputFormatters: widget.viewModel.numericFormatter,
+    keyboardType: .number,
+    style: AppStyles.textPrimary,
+  );
 }

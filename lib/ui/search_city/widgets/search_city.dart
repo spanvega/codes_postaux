@@ -56,7 +56,7 @@ class _SearchCityState extends State<SearchCity> {
                 suffixIcon: const Icon(Icons.search),
               ),
               inputFormatters: widget.viewModel.alphaFormatter,
-              keyboardType: TextInputType.text,
+              keyboardType: .text,
               style: AppStyles.textPrimary,
             );
           },
@@ -64,18 +64,18 @@ class _SearchCityState extends State<SearchCity> {
           widget.viewModel.buildOptions(textEditingValue.text),
       onSelected: (String selection) => textEditingController.clear(),
       optionsViewBuilder: (context, onSelected, options) => Align(
-        alignment: Alignment.bottomLeft,
+        alignment: .bottomLeft,
         child: SizedBox(
           height: options.length * Dimens.itemHeight,
           child: Material(
             borderRadius: AppTheme.borderTextField.borderRadius,
-            clipBehavior: Clip.antiAlias,
+            clipBehavior: .antiAlias,
             elevation: 1,
             child: ListView.builder(
               itemCount: options.length,
               itemBuilder: (BuildContext context, int index) => GestureDetector(
                 onTap: () {
-                  widget.viewModel.postalCodeByCode.execute(index);
+                  widget.viewModel.postalCodesByCode.execute(index);
                   onSelected(options.elementAt(index));
                 },
                 child: ListTile(
@@ -94,7 +94,7 @@ class _SearchCityState extends State<SearchCity> {
           ),
         ),
       ),
-      optionsViewOpenDirection: OptionsViewOpenDirection.up,
+      optionsViewOpenDirection: .up,
     );
   }
 }
