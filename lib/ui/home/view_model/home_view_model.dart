@@ -7,33 +7,22 @@ import 'package:codes_postaux/utils/result.dart';
 
 class HomeViewModel extends ChangeNotifier {
   HomeViewModel() {
-    gotoProject = Command0(_gotoProject);
-    invertSearch = Command0(_invertSearch);
+    gotoProject = .new(_gotoProject);
   }
 
   late final Command0 gotoProject;
-  late final Command0 invertSearch;
 
-  //
+  Future<Result<void>> _gotoProject() async {
+    bool success = await launchUrl(
+      .new(scheme: 'https', host: 'github.com', path: 'spanvega/codes_postaux'),
+    );
 
-  Future<Result<bool>> _gotoProject() async {
-    bool success = await launchUrl(Uri(
-        scheme: 'https', host: 'github.com', path: 'spanvega/codes_postaux'));
-
-    return success
-        ? Result.ok(success)
-        : Result.error(Exception('Failed to launch url'));
+    return success ? .ok(success) : .error(.new('Failed to launch url'));
   }
 
   //
 
-  bool _inverted = false;
-  bool get inverted => _inverted;
+  ValueNotifier<bool> searchInvert = ValueNotifier<bool>(false);
 
-  Future<Result<void>> _invertSearch() {
-    _inverted = !_inverted;
-    notifyListeners();
-
-    return Future.value(const Result.ok(null));
-  }
+  invertSearch() => searchInvert.value = !searchInvert.value;
 }

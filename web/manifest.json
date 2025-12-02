@@ -1,6 +1,6 @@
 {
-    "name": "recherche_code_postal",
-    "short_name": "recherche_code_postal",
+    "name": "codes_postaux",
+    "short_name": "codes_postaux",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

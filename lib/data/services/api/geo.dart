@@ -12,33 +12,44 @@ const String url = 'https://geo.api.gouv.fr/communes';
 class Geo {
   Future<Result<List<dynamic>>> _call(String parameters) async {
     try {
-      Response response = await get(Uri.parse('$url?$parameters'));
+      Response response = await get(.parse('$url?$parameters'));
 
       if (response.statusCode == 200) {
-        return Result.ok(jsonDecode(response.body));
+        return .ok(jsonDecode(response.body));
       } else {
-        return const Result.error(HttpException("Invalid response"));
+        return const .error(HttpException("Invalid response"));
       }
     } on Exception catch (error) {
-      return Result.error(error);
+      return .error(error);
     }
   }
 
   // Les champs nom et code sont renvoyés par défaut
 
-  final String _searchFields = 'code,departement,nom&boost=population&limit=4';
+  final String _citiesListFields = 'code,departement,nom';
 
-  Future<Result<List<dynamic>>> searchByCity(String city) =>
-      _call('nom=$city&fields=$_searchFields');
+  Future<Result<List<dynamic>>> citiesListByPopulation(
+    String search, {
+    int limit = 4,
+  }) => _call(
+    'nom=$search&fields=$_citiesListFields&boost=population&limit=$limit',
+  );
 
   //
 
-  final String _queryFields =
+  final String _postalCodeFields = 'codesPostaux,nom';
+
+  Future<Result<List<dynamic>>> postalCodesByCode(String codeInsee) =>
+      _call('code=$codeInsee&fields=$_postalCodeFields');
+
+  //
+
+  final String _cityDetailsFields =
       'bbox,code,codesPostaux,contour,departement,nom,mairie,population,region,surface';
 
-  Future<Result<List<dynamic>>> searchByCode(String code) =>
-      _call('code=$code&fields=$_queryFields');
+  Future<Result<List<dynamic>>> cityDetailsByCode(String codeInsee) =>
+      _call('code=$codeInsee&fields=$_cityDetailsFields');
 
-  Future<Result<List<dynamic>>> searchByLatLon(double lat, double lon) =>
-      _call('lat=$lat&lon=$lon&fields=$_queryFields');
+  Future<Result<List<dynamic>>> cityDetailsByLatLon(double lat, double lon) =>
+      _call('lat=$lat&lon=$lon&fields=$_cityDetailsFields');
 }

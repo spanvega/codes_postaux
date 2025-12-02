@@ -15,36 +15,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get voirLeProjet => 'Voir le projet';
 
   @override
-  String arrondissement(num count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
-      locale: localeName,
-    );
-    final String countString = countNumberFormat.format(count);
-
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '${countString}e Arrondissement',
-      one: '1er Arrondissement',
-    );
+  String numero(String count) {
+    String _temp0 = intl.Intl.selectLogic(count, {
+      '1': '1er',
+      'other': '${count}e',
+    });
     return '$_temp0';
   }
 
   @override
-  String quartier(num count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
-      locale: localeName,
-    );
-    final String countString = countNumberFormat.format(count);
-
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '${countString}e Quartier',
-      one: '1er Quartier',
-    );
-    return '$_temp0';
-  }
+  String get arrondissement => 'Arrondissement';
 
   @override
   String get nonAttribue => 'Le code postal n\'est pas attribué';

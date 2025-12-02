@@ -12,17 +12,18 @@ const String url = 'https://apicarto.ign.fr/api/codes-postaux/communes';
 class Carto {
   Future<Result<List<dynamic>>> _call(String parameters) async {
     try {
-      Response response = await get(Uri.parse('$url/$parameters'));
+      Response response = await get(.parse('$url/$parameters'));
 
       if (response.statusCode == 200) {
-        return Result.ok(jsonDecode(response.body));
+        return .ok(jsonDecode(response.body));
       } else {
-        return const Result.error(HttpException("Invalid response"));
+        return const .error(HttpException("Invalid response"));
       }
     } on Exception catch (error) {
-      return Result.error(error);
+      return .error(error);
     }
   }
 
-  Future<Result<List<dynamic>>> search(String postalCode) => _call(postalCode);
+  Future<Result<List<dynamic>>> citiesByPostalCode(String codePostal) =>
+      _call(codePostal);
 }

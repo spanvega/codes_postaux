@@ -12,39 +12,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get titre => 'Postal Codes';
 
   @override
-  String get voirLeProjet => 'View roject';
+  String get voirLeProjet => 'View project';
 
   @override
-  String arrondissement(num count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
-      locale: localeName,
-    );
-    final String countString = countNumberFormat.format(count);
-
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '${countString}th District',
-      one: '1st District',
-    );
+  String numero(String count) {
+    String _temp0 = intl.Intl.selectLogic(count, {
+      '1': '1st',
+      '2': '2nd',
+      '3': '3rd',
+      'other': '${count}th',
+    });
     return '$_temp0';
   }
 
   @override
-  String quartier(num count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
-      locale: localeName,
-    );
-    final String countString = countNumberFormat.format(count);
-
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '${countString}th Neighborhood',
-      one: '1st Neighborhood',
-    );
-    return '$_temp0';
-  }
+  String get arrondissement => 'District';
 
   @override
   String get nonAttribue => 'The postal code is not assigned';

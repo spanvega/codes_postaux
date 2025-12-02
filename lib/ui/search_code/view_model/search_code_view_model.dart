@@ -1,37 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:codes_postaux/data/repositories/code/code_repository.dart';
-import 'package:codes_postaux/data/repositories/code/model/code.dart';
-import 'package:codes_postaux/utils/command.dart';
+import 'package:codes_postaux/data/repositories/codes/codes_repository.dart';
+import 'package:codes_postaux/data/repositories/codes/model/code.dart';
 import 'package:codes_postaux/utils/result.dart';
 
 class SearchCodeViewModel extends ChangeNotifier {
-  SearchCodeViewModel({required CodeRepository codeRepository})
-      : _codeRepository = codeRepository {
-    searchByCode = Command1<void, String>(_searchByCode);
+  SearchCodeViewModel({required CodesRepository codesRepository})
+    : _codesRepository = codesRepository {
+    textFieldController = .new()..addListener(_validateSearch);
   }
 
-  final CodeRepository _codeRepository;
+  final CodesRepository _codesRepository;
 
-  late final Command1<void, String> searchByCode;
+  late final TextEditingController textFieldController;
 
   Exception? error;
 
   //
 
-  final List<TextInputFormatter> numericFormatter = <TextInputFormatter>[
+  final List<TextInputFormatter> numericFormatter = [
     FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-    LengthLimitingTextInputFormatter(5)
+    LengthLimitingTextInputFormatter(5),
   ];
 
   //
 
-  List<Code> _codesFromCode = <Code>[];
+  void _validateSearch() {
+    if (textFieldController.text.characters.length == 5) {
+      _citiesByPostalCode(textFieldController.text);
+      textFieldController.clear();
+    }
+  }
+
+  List<Code> _codesFromCode = .empty();
   List<Code> get codesFromCode => _codesFromCode;
 
-  Future<Result<void>> _searchByCode(String code) async {
-    final Result<List<Code>> result = await _codeRepository.searchByCode(code);
+  Future<Result<void>> _citiesByPostalCode(String codePostal) async {
+    final Result<List<Code>> result = await _codesRepository.citiesByPostalCode(
+      codePostal,
+    );
 
     switch (result) {
       case Ok<List<Code>>():

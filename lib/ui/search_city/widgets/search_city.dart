@@ -32,62 +32,69 @@ class _SearchCityState extends State<SearchCity> {
     super.dispose();
   }
 
-  void _onViewModelChanged() => context.read<TableCodesViewModel>().codes =
-      widget.viewModel.codesFromCity;
+  void _onViewModelChanged() => context.read<TableCodesViewModel>().update(
+    value: widget.viewModel.codesFromCity,
+  );
 
   @override
-  Widget build(BuildContext context) {
-    late TextEditingController textEditingController;
-    return Autocomplete<String>(
-        fieldViewBuilder: (BuildContext context,
-            TextEditingController fieldTextEditingController,
-            FocusNode fieldFocusNode,
-            VoidCallback onFieldSubmitted) {
-          textEditingController = fieldTextEditingController;
+  Widget build(BuildContext context) => Autocomplete<String>(
+    fieldViewBuilder:
+        (
+          BuildContext context,
+          TextEditingController fieldTextEditingController,
+          FocusNode fieldFocusNode,
+          VoidCallback onFieldSubmitted,
+        ) {
+          widget.viewModel.textFieldController = fieldTextEditingController;
           return TextField(
-              autofocus: true,
-              controller: fieldTextEditingController,
-              focusNode: fieldFocusNode,
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context)!.saisieVille,
-                suffixIcon: const Icon(Icons.search),
-              ),
-              inputFormatters: widget.viewModel.alphaFormatter,
-              keyboardType: TextInputType.text,
-              style: AppStyles.textPrimary);
+            autofocus: true,
+            controller: fieldTextEditingController,
+            focusNode: fieldFocusNode,
+            decoration: .new(
+              hintText: AppLocalizations.of(context)!.saisieVille,
+              suffixIcon: const Icon(Icons.search),
+            ),
+            inputFormatters: widget.viewModel.alphaFormatter,
+            keyboardType: .text,
+            style: AppStyles.textPrimary,
+          );
         },
-        optionsBuilder: (TextEditingValue textEditingValue) =>
-            textEditingValue.text.isNotEmpty
-                ? widget.viewModel.buildOptions(textEditingValue.text)
-                : Future.value(<String>[]),
-        onSelected: (String selection) => textEditingController.clear(),
-        optionsViewBuilder: (context, onSelected, options) => Align(
-            alignment: Alignment.bottomLeft,
-            child: SizedBox(
-                height: options.length * Dimens.itemHeight,
-                child: Material(
-                    borderRadius: AppTheme.borderTextField.borderRadius,
-                    clipBehavior: Clip.antiAlias,
-                    elevation: 1,
-                    child: ListView.builder(
-                      itemCount: options.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          GestureDetector(
-                              onTap: () {
-                                widget.viewModel.searchByCity.execute(index);
-                                onSelected(options.elementAt(index));
-                              },
-                              child: ListTile(
-                                  contentPadding: Dimens.textFieldContent,
-                                  minTileHeight: Dimens.itemHeight,
-                                  tileColor: index.isEven
-                                      ? AppColors.amber1
-                                      : AppColors.white,
-                                  title: Text(options.elementAt(index),
-                                      style: index.isEven
-                                          ? AppStyles.textSecondary
-                                          : AppStyles.textPrimary))),
-                    )))),
-        optionsViewOpenDirection: OptionsViewOpenDirection.up);
-  }
+    optionsBuilder: (TextEditingValue textEditingValue) =>
+        widget.viewModel.buildOptions(textEditingValue.text),
+    onSelected: (String selection) =>
+        widget.viewModel.textFieldController.clear(),
+    optionsViewBuilder: (context, onSelected, options) => Align(
+      alignment: .bottomLeft,
+      child: SizedBox(
+        height: options.length * Dimens.itemHeight,
+        child: Material(
+          borderRadius: AppTheme.borderTextField.borderRadius,
+          clipBehavior: .antiAlias,
+          elevation: 1,
+          child: ListView.builder(
+            itemCount: options.length,
+            itemBuilder: (BuildContext context, int index) => GestureDetector(
+              onTap: () {
+                widget.viewModel.postalCodesByCode.execute(index);
+                onSelected(options.elementAt(index));
+              },
+              child: Container(
+                alignment: .centerLeft,
+                color: index.isEven ? AppColors.amber1 : AppColors.white,
+                height: Dimens.itemHeight,
+                padding: const .only(left: Dimens.paddingHorizontal),
+                child: Text(
+                  options.elementAt(index),
+                  style: index.isEven
+                      ? AppStyles.textSecondary
+                      : AppStyles.textPrimary,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+    optionsViewOpenDirection: .up,
+  );
 }

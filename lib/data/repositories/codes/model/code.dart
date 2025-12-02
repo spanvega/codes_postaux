@@ -1,5 +1,5 @@
 class Code {
-  final String codePostal;
+  final List<int> codePostal;
   final String ville;
 
   Code(this.codePostal, this.ville);

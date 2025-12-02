@@ -3,29 +3,23 @@
   "@titre": {
     "description": "The application title"
   },
-  "voirLeProjet": "View roject",
+  "voirLeProjet": "View project",
   "@voirLeProjet": {
     "description": "Button to view the project"
   },
-    "arrondissement": "{count, plural, =1{1st District} other{{count}th District}}",
+  "numero": "{count, select, 1{1st} 2{2nd} 3{3rd} other{{count}th}}",
+  "@numero": {
+    "description": "District number formatting",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "arrondissement": "District",
   "@arrondissement": {
-    "description": "Formatting of the district",
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "format": "compact"
-      }
-    }},
-    "quartier": "{count, plural, =1{1st Neighborhood} other{{count}th Neighborhood}}",
-  "@quartier": {
-    "description": "Formatting of the neighborhood",
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "format": "compact"
-      }
-    }},
-
+    "description": "District label"
+  },
   "nonAttribue": "The postal code is not assigned",
   "@nonAttribue": {
     "description": "Message when the postal code is not assigned"

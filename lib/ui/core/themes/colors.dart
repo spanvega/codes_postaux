@@ -13,13 +13,14 @@ abstract final class AppColors {
   static const white = Color(0xFFFFFFFF);
 
   static const lightColorScheme = ColorScheme(
-      brightness: Brightness.light,
-      primary: AppColors.amber1,
-      onPrimary: AppColors.white,
-      secondary: AppColors.white,
-      onSecondary: AppColors.grey1,
-      surface: AppColors.white,
-      onSurface: AppColors.grey2,
-      error: AppColors.white,
-      onError: Color(0xFFF44336));
+    brightness: .light,
+    primary: AppColors.amber1,
+    onPrimary: AppColors.white,
+    secondary: AppColors.white,
+    onSecondary: AppColors.grey1,
+    surface: AppColors.white,
+    onSurface: AppColors.grey2,
+    error: AppColors.white,
+    onError: Colors.red,
+  );
 }

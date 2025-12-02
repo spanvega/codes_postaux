@@ -18,53 +18,50 @@ class SearchCode extends StatefulWidget {
 }
 
 class _SearchCodeState extends State<SearchCode> {
-  final textFieldController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
     widget.viewModel.addListener(_onViewModelChanged);
-    textFieldController.addListener(() {
-      if (textFieldController.text.characters.length == 5) {
-        widget.viewModel.searchByCode.execute(textFieldController.text);
-        textFieldController.clear();
-      }
-    });
   }
 
   @override
   void dispose() {
     widget.viewModel.removeListener(_onViewModelChanged);
-    textFieldController.dispose();
     super.dispose();
   }
 
   void _onViewModelChanged() {
     if (widget.viewModel.error != null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Container(
-            alignment: Alignment.centerLeft,
+      ScaffoldMessenger.of(context).showSnackBar(
+        .new(
+          content: Container(
+            alignment: .center,
             height: Dimens.itemHeight,
-            child: Text(AppLocalizations.of(context)!.nonAttribue)),
-        duration: const Duration(seconds: 1),
-      ));
-      context.read<TableCodesViewModel>().clearData();
+            child: Text(AppLocalizations.of(context)!.nonAttribue),
+          ),
+          duration: const .new(seconds: 1),
+        ),
+      );
       widget.viewModel.error = null;
+      //
+      context.read<TableCodesViewModel>().clear();
     } else {
-      context.read<TableCodesViewModel>().codes =
-          widget.viewModel.codesFromCode;
+      context.read<TableCodesViewModel>().update(
+        value: widget.viewModel.codesFromCode,
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) => TextField(
-      autofocus: true,
-      controller: textFieldController,
-      decoration: InputDecoration(
-        hintText: AppLocalizations.of(context)!.saisieCodePostal,
-        suffixIcon: const Icon(Icons.search),
-      ),
-      inputFormatters: widget.viewModel.numericFormatter,
-      keyboardType: TextInputType.number,
-      style: AppStyles.textPrimary);
+    autofocus: true,
+    controller: widget.viewModel.textFieldController,
+    decoration: .new(
+      hintText: AppLocalizations.of(context)!.saisieCodePostal,
+      suffixIcon: const Icon(Icons.search),
+    ),
+    inputFormatters: widget.viewModel.numericFormatter,
+    keyboardType: .number,
+    style: AppStyles.textPrimary,
+  );
 }
