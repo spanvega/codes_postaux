@@ -14,7 +14,7 @@ class SearchCityViewModel extends ChangeNotifier {
     required OptionsRepository optionsRepository,
   }) : _codesRepository = codesRepository,
        _optionsRepository = optionsRepository {
-    postalCodesByCode = Command1<void, int>(_postalCodesByCode);
+    postalCodesByCode = .new(_postalCodesByCode);
   }
 
   final CodesRepository _codesRepository;
@@ -22,15 +22,17 @@ class SearchCityViewModel extends ChangeNotifier {
 
   late final Command1<void, int> postalCodesByCode;
 
+  late final TextEditingController textFieldController;
+
   //
 
-  final List<TextInputFormatter> alphaFormatter = <TextInputFormatter>[
+  final List<TextInputFormatter> alphaFormatter = [
     FilteringTextInputFormatter.allow(RegExp('[a-zA-Z-\' ]')),
   ];
 
   //
 
-  List<Option> _options = <Option>[];
+  List<Option> _options = .empty();
 
   Future<Result<void>> updateOptions(String search) async {
     try {
@@ -39,40 +41,38 @@ class SearchCityViewModel extends ChangeNotifier {
       switch (result) {
         case Ok<List<Option>>():
           _options = result.value;
-          return Result.ok(result.value);
+          return .ok(result.value);
         case Error<List<Option>>():
-          return Result.error(result.error);
+          return .error(result.error);
       }
     } on Exception catch (e) {
-      return Result.error(e);
+      return .error(e);
     }
   }
 
-  Future<List<String>> buildOptions(String search) async => search.isNotEmpty
-      ? updateOptions(search).then(
-          (_) => List<String>.generate(
-            _options.length,
-            (int index) => _options[index].label,
-          ),
-        )
-      : [];
+  Future<List<String>> buildOptions(String search) async => search.isEmpty
+      ? .empty()
+      : updateOptions(search).then(
+          (_) =>
+              .generate(_options.length, (int index) => _options[index].label),
+        );
 
   //
 
-  List<Code> _codesFromCity = <Code>[];
+  List<Code> _codesFromCity = .empty();
   List<Code> get codesFromCity => _codesFromCity;
 
   Future<Result<void>> _postalCodesByCode(int index) async {
     final Result<List<Code>> result = await _codesRepository.postalCodesByCode(
-      _options[index].code,
+      _options[index].codeInsee.toString(),
     );
 
     switch (result) {
       case Ok<List<Code>>():
         _codesFromCity = result.value;
-        notifyListeners();
       case Error<List<Code>>():
     }
+    notifyListeners();
     return result;
   }
 }

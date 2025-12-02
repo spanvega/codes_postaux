@@ -12,15 +12,15 @@ const String url = 'https://geo.api.gouv.fr/communes';
 class Geo {
   Future<Result<List<dynamic>>> _call(String parameters) async {
     try {
-      Response response = await get(Uri.parse('$url?$parameters'));
+      Response response = await get(.parse('$url?$parameters'));
 
       if (response.statusCode == 200) {
-        return Result.ok(jsonDecode(response.body));
+        return .ok(jsonDecode(response.body));
       } else {
-        return const Result.error(HttpException("Invalid response"));
+        return const .error(HttpException("Invalid response"));
       }
     } on Exception catch (error) {
-      return Result.error(error);
+      return .error(error);
     }
   }
 

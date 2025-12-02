@@ -4,36 +4,42 @@ import 'package:alphanum_comparator/alphanum_comparator.dart';
 
 import 'package:codes_postaux/data/repositories/codes/model/code.dart';
 
-class TableCodesViewModel extends ValueNotifier<List<Code>> {
-  TableCodesViewModel() : super(<Code>[]);
+class TableCodesViewModel {
+  int _index = 0;
+  get index => _index;
 
-  final sorters = [
-    (Code a, Code b) => AlphanumComparator.compare(a.ville, b.ville),
-    (Code a, Code b) => a.codePostal.compareTo(b.codePostal),
-  ];
+  bool _ascending = true;
+  get ascending => _ascending;
 
-  int selectedCol = 0;
-  bool sortAsc = true;
+  final ValueNotifier<List<Code>> _codes = .new(.empty());
+  get codes => _codes;
 
-  @override
-  set value(List<Code> codes) {
-    selectedCol = 0;
-    sortAsc = true;
+  void clear() => _codes.value = .empty();
 
-    super.value = codes..sort((a, b) => sorters[0](a, b));
-  }
+  void update({int index = 0, bool ascending = true, List<Code>? value}) {
+    if (index == 0) {
+      _codes.value = .from(value ?? _codes.value)
+        ..sort(
+          (a, b) => ascending
+              ? AlphanumComparator.compare(a.ville, b.ville)
+              : AlphanumComparator.compare(b.ville, a.ville),
+        );
+    } else if (index == 1) {
+      for (Code code in _codes.value) {
+        code.codePostal.sort(
+          (a, b) => ascending ? a.compareTo(b) : b.compareTo(a),
+        );
+      }
 
-  void clear() => value = [];
+      _codes.value = .from(value ?? _codes.value)
+        ..sort(
+          (a, b) => ascending
+              ? a.codePostal[0].compareTo(b.codePostal[0])
+              : b.codePostal[0].compareTo(a.codePostal[0]),
+        );
+    }
 
-  void sort(int columnIndex, bool ascending) {
-    selectedCol = columnIndex;
-    sortAsc = ascending;
-
-    value.sort(
-      (a, b) =>
-          sortAsc ? sorters[columnIndex](a, b) : sorters[columnIndex](b, a),
-    );
-
-    notifyListeners();
+    _index = index;
+    _ascending = ascending;
   }
 }

@@ -2,109 +2,91 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:codes_postaux/data/repositories/codes/codes_repository.dart';
-import 'package:codes_postaux/data/repositories/options/options_repository.dart';
-import 'package:codes_postaux/data/services/api/geo.dart';
 import 'package:codes_postaux/ui/core/localizations/app_localizations.dart';
 import 'package:codes_postaux/ui/core/themes/colors.dart';
 import 'package:codes_postaux/ui/core/themes/dimens.dart';
 import 'package:codes_postaux/ui/home/view_model/home_view_model.dart';
-import 'package:codes_postaux/ui/search_city/view_model/search_city_view_model.dart';
 import 'package:codes_postaux/ui/search_city/widgets/search_city.dart';
-import 'package:codes_postaux/ui/search_code/view_model/search_code_view_model.dart';
 import 'package:codes_postaux/ui/search_code/widgets/search_code.dart';
 import 'package:codes_postaux/ui/table_codes/view_model/table_codes_view_model.dart';
 import 'package:codes_postaux/ui/table_codes/widgets/table_codes.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({super.key, required this.viewModel});
 
   final HomeViewModel viewModel;
 
   @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  void initState() {
-    super.initState();
-    widget.viewModel.addListener(_onViewModelChanged);
-  }
-
-  @override
-  void dispose() {
-    widget.viewModel.removeListener(_onViewModelChanged);
-    super.dispose();
-  }
-
-  void _onViewModelChanged() => context.read<TableCodesViewModel>().clear();
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      titleSpacing: Dimens.paddingHorizontal,
-      toolbarHeight: Dimens.toolbarHeight,
-      title: Text(AppLocalizations.of(context)!.titre),
-      actions: [
-        FloatingActionButton.small(
-          tooltip: AppLocalizations.of(context)!.voirLeProjet,
-          child: const Icon(Icons.link),
-          onPressed: () => widget.viewModel.gotoProject.execute(),
-        ),
-        const SizedBox(width: Dimens.paddingHorizontal),
-      ],
-    ),
-    body: Column(
-      children: [
-        Expanded(
-          child: ListenableBuilder(
-            listenable: context.read<TableCodesViewModel>(),
-            builder: (context, child) =>
-                TableCodes(viewModel: context.read<TableCodesViewModel>()),
+  Widget build(BuildContext context) => SafeArea(
+    child: Scaffold(
+      appBar: AppBar(
+        titleSpacing: Dimens.paddingHorizontal,
+        toolbarHeight: Dimens.toolbarHeight,
+        title: Text(AppLocalizations.of(context)!.titre),
+        actions: [
+          FloatingActionButton.small(
+            tooltip: AppLocalizations.of(context)!.voirLeProjet,
+            child: const Icon(Icons.link),
+            onPressed: () => viewModel.gotoProject.execute(),
           ),
-        ),
-        Container(
-          color: AppColors.amber2,
-          child: Padding(
-            padding: Dimens.edgeInsetsScreenSymmetric,
-            child: Row(
-              spacing: Dimens.paddingHorizontal,
-              children: [
-                FloatingActionButton.small(
-                  tooltip: AppLocalizations.of(context)!.inverserRecherche,
-                  child: const Icon(Icons.swap_vert),
-                  onPressed: () => widget.viewModel.invertSearch.execute(),
-                ),
-                Expanded(
-                  child: SizedBox(
-                    height: Dimens.itemHeight,
-                    child: ListenableBuilder(
-                      listenable: widget.viewModel.invertSearch,
-                      builder: (context, child) => widget.viewModel.inverted
-                          ? SearchCode(
-                              viewModel: SearchCodeViewModel(
-                                codesRepository: context
-                                    .read<CodesRepository>(),
-                              ),
-                            )
-                          : SearchCity(
-                              viewModel: SearchCityViewModel(
-                                codesRepository: context
-                                    .read<CodesRepository>(),
-                                optionsRepository: OptionsRepository(
-                                  geo: context.read<Geo>(),
-                                ),
-                              ),
-                            ),
-                    ),
-                  ),
-                ),
-              ],
+          const SizedBox(width: Dimens.paddingHorizontal),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ValueListenableBuilder(
+              valueListenable: context.read<TableCodesViewModel>().codes,
+              builder: (context, value, child) =>
+                  TableCodes(viewModel: context.read()),
             ),
           ),
-        ),
-      ],
+          Container(
+            color: AppColors.amber2,
+            child: Padding(
+              padding: const .symmetric(
+                horizontal: Dimens.paddingHorizontal,
+                vertical: Dimens.paddingVertical,
+              ),
+              child: Row(
+                spacing: Dimens.paddingHorizontal,
+                children: [
+                  FloatingActionButton.small(
+                    tooltip: AppLocalizations.of(context)!.inverserRecherche,
+                    child: const Icon(Icons.swap_vert),
+                    onPressed: () {
+                      viewModel.invertSearch();
+                      //
+                      context.read<TableCodesViewModel>().clear();
+                    },
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      height: Dimens.itemHeight,
+                      child: ValueListenableBuilder(
+                        valueListenable: viewModel.searchInvert,
+                        builder: (context, value, child) =>
+                            viewModel.searchInvert.value
+                            ? SearchCode(
+                                viewModel: .new(
+                                  codesRepository: context.read(),
+                                ),
+                              )
+                            : SearchCity(
+                                viewModel: .new(
+                                  codesRepository: context.read(),
+                                  optionsRepository: .new(geo: context.read()),
+                                ),
+                              ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }

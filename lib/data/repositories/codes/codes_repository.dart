@@ -22,18 +22,19 @@ class CodesRepository {
         case Ok<List<dynamic>>():
           final List<dynamic> json = result.value;
 
-          List<Code> codes = List<Code>.generate(
+          List<Code> codes = .generate(
             json.length,
-            (int index) =>
-                Code(json[index]['codePostal'], json[index]['nomCommune']),
+            (int index) => .new([
+              .parse(json[index]['codePostal']),
+            ], json[index]['nomCommune']),
           );
 
-          return Result.ok(codes);
+          return .ok(codes);
         case Error<List<dynamic>>():
-          return Result.error(result.error);
+          return .error(result.error);
       }
     } on Exception catch (e) {
-      return Result.error(e);
+      return .error(e);
     }
   }
 
@@ -48,24 +49,36 @@ class CodesRepository {
             PlatformDispatcher.instance.locale,
           );
 
-          int index = villes.indexWhere((ville) => ville.nom == json[0]['nom']);
+          int key = villes.indexWhere((ville) => ville.nom == json[0]['nom']);
 
-          List<Code> codes = index != -1
-              ? List<Code>.generate(
-                  villes[index].arrondissements.length,
-                  (int i) => Code(
-                    villes[index].arrondissements[i].codePostal.join(', '),
-                    '${villes[index].nom} ${locale.numero((i + 1).toString())} ${locale.arrondissement}',
+          List<Code> codes = key != -1
+              ? .generate(
+                  villes[key].arrondissements.length,
+                  (int i) => .new(
+                    .generate(
+                      villes[key].arrondissements[i].codePostal.length,
+                      (int index) =>
+                          villes[key].arrondissements[i].codePostal[index],
+                    ),
+                    '${villes[key].nom} ${locale.numero((i + 1).toString())} ${locale.arrondissement}',
                   ),
                 )
-              : [Code(json[0]['codesPostaux'].join(', '), json[0]['nom'])];
+              : [
+                  .new(
+                    .generate(
+                      json[0]['codesPostaux'].length,
+                      (int index) => .parse(json[0]['codesPostaux'][index]),
+                    ),
+                    json[0]['nom'],
+                  ),
+                ];
 
-          return Result.ok(codes);
+          return .ok(codes);
         case Error<List<dynamic>>():
-          return Result.error(result.error);
+          return .error(result.error);
       }
     } on Exception catch (e) {
-      return Result.error(e);
+      return .error(e);
     }
   }
 }

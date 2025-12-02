@@ -3,7 +3,7 @@ description: "Recherche inversée de code postal"
 
 publish_to: 'none'
 
-version: 2.2.0+2
+version: 2.2.0+4
 
 environment:
   sdk: ^3.10.0
@@ -16,7 +16,7 @@ dependencies:
   intl: any
 
   alphanum_comparator: ^2.0.3
-  data_table_2: ^2.6.0
+  data_table_2: ^2.7.1
   flutter_native_splash: ^2.4.7
   http: ^1.6.0
   provider: ^6.1.5+1

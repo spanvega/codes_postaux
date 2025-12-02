@@ -1,6 +1,6 @@
 class Option {
-  final String code;
+  final int codeInsee;
   final String label;
 
-  Option(this.code, this.label);
+  Option(this.codeInsee, this.label);
 }

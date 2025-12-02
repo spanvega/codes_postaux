@@ -14,20 +14,20 @@ class OptionsRepository {
         case Ok<List<dynamic>>():
           final List<dynamic> json = result.value;
 
-          List<Option> options = List<Option>.generate(
+          List<Option> options = .generate(
             json.length,
-            (int index) => Option(
-              json.elementAt(index)['code'],
+            (int index) => .new(
+              .parse(json.elementAt(index)['code']),
               '${json.elementAt(index)['nom']}, ${json.elementAt(index)['departement']['nom']}',
             ),
           );
 
-          return Result.ok(options);
+          return .ok(options);
         case Error<List<dynamic>>():
-          return Result.error(result.error);
+          return .error(result.error);
       }
     } on Exception catch (e) {
-      return Result.error(e);
+      return .error(e);
     }
   }
 }

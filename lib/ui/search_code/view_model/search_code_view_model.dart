@@ -8,7 +8,7 @@ import 'package:codes_postaux/utils/result.dart';
 class SearchCodeViewModel extends ChangeNotifier {
   SearchCodeViewModel({required CodesRepository codesRepository})
     : _codesRepository = codesRepository {
-    textFieldController = TextEditingController()..addListener(_validateSearch);
+    textFieldController = .new()..addListener(_validateSearch);
   }
 
   final CodesRepository _codesRepository;
@@ -19,7 +19,7 @@ class SearchCodeViewModel extends ChangeNotifier {
 
   //
 
-  final List<TextInputFormatter> numericFormatter = <TextInputFormatter>[
+  final List<TextInputFormatter> numericFormatter = [
     FilteringTextInputFormatter.allow(RegExp('[0-9]')),
     LengthLimitingTextInputFormatter(5),
   ];
@@ -33,7 +33,7 @@ class SearchCodeViewModel extends ChangeNotifier {
     }
   }
 
-  List<Code> _codesFromCode = <Code>[];
+  List<Code> _codesFromCode = .empty();
   List<Code> get codesFromCode => _codesFromCode;
 
   Future<Result<void>> _citiesByPostalCode(String codePostal) async {

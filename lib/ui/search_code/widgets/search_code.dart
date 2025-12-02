@@ -33,28 +33,22 @@ class _SearchCodeState extends State<SearchCode> {
   void _onViewModelChanged() {
     if (widget.viewModel.error != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          /*
-        content: SizedBox(
-            height: Dimens.toolbarHeight,
-            child:
-                Center(child: Text(AppLocalizations.of(context)!.nonAttribue))),
-        duration: const Duration(seconds: 1),
-        padding: .zero,
-        */
+        .new(
           content: Container(
             alignment: .center,
             height: Dimens.itemHeight,
             child: Text(AppLocalizations.of(context)!.nonAttribue),
           ),
-          duration: const Duration(seconds: 1),
+          duration: const .new(seconds: 1),
         ),
       );
-      context.read<TableCodesViewModel>().clear();
       widget.viewModel.error = null;
+      //
+      context.read<TableCodesViewModel>().clear();
     } else {
-      context.read<TableCodesViewModel>().value =
-          widget.viewModel.codesFromCode;
+      context.read<TableCodesViewModel>().update(
+        value: widget.viewModel.codesFromCode,
+      );
     }
   }
 
@@ -62,7 +56,7 @@ class _SearchCodeState extends State<SearchCode> {
   Widget build(BuildContext context) => TextField(
     autofocus: true,
     controller: widget.viewModel.textFieldController,
-    decoration: InputDecoration(
+    decoration: .new(
       hintText: AppLocalizations.of(context)!.saisieCodePostal,
       suffixIcon: const Icon(Icons.search),
     ),
